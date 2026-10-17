@@ -1,0 +1,418 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>FastVPN — 用一根专线，把网络还给使用者</title><meta name="description" content="FastVPN 是一支专注网络通道服务的团队，提供从基础连节点到企业级专线的多档订阅。本页记录他们的设计思路、套餐结构与常见疑问，回答用户对节点、流量与跨平台客户端的真实关切。"><meta name="keywords" content="FastVPN,网络加速,专线服务,流媒体,游戏加速,多设备"><meta name="robots" content="index,follow"><link rel="canonical" href="https://p-78a4c6e893.ezw88.cn/"><meta property="og:type" content="website"><meta property="og:title" content="FastVPN — 用一根专线，把网络还给使用者"><meta property="og:description" content="FastVPN 是一支专注网络通道服务的团队，提供从基础连节点到企业级专线的多档订阅。本页记录他们的设计思路、套餐结构与常见疑问，回答用户对节点、流量与跨平台客户端的真实关切。"><meta property="og:url" content="https://p-78a4c6e893.ezw88.cn/"><meta property="og:site_name" content="FastVPN"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "url": "https://p-78a4c6e893.ezw88.cn/", "name": "FastVPN — 用一根专线，把网络还给使用者", "description": "FastVPN 是一支专注网络通道服务的团队，提供从基础连节点到企业级专线的多档订阅。本页记录他们的设计思路、套餐结构与常见疑问，回答用户对节点、流量与跨平台客户端的真实关切。", "inLanguage": "zh-CN"}</script><meta name="publisher-task" content="a3eaa9c43dbbe31bef75d2da:2abab53f08da37c78290c38fb947ef9ea3fb746b8b84b735cbcaae9a62fe3753:a4c98cb5eb5a6865d8fe"></head><body id="top"><style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;font-size:16px}
+body{font-family:"Source Han Serif SC","Noto Serif CJK SC","Songti SC",Georgia,"Times New Roman",serif;background:#f7f1e6;color:#3b1f24;line-height:1.7;-webkit-font-smoothing:antialiased;letter-spacing:.01em}
+a{color:#7a1c2c;text-decoration:none;border-bottom:1px solid rgba(122,28,44,.3);transition:color .2s ease}
+a:hover{color:#3b1f24;border-bottom-color:#3b1f24}
+h1,h2,h3,h4{font-family:"Source Han Serif SC","Noto Serif CJK SC","Songti SC",Georgia,serif;color:#3b1f24;font-weight:600;line-height:1.3;letter-spacing:-.005em}
+h1{font-size:clamp(2.1rem,5.2vw,3.8rem);font-weight:700}
+h2{font-size:clamp(1.5rem,3.2vw,2.1rem);margin-bottom:1rem}
+h3{font-size:1.15rem;margin-bottom:.6rem;color:#7a1c2c}
+p{margin-bottom:1rem}
+.wrap{max-width:1140px;margin:0 auto;padding:0 1.4rem}
+
+/* HERO — 纵向时间线 */
+.hero{position:relative;padding:5rem 0 4rem;background:linear-gradient(180deg,#f7f1e6 0%,#f3ead7 100%)}
+.hero::before{content:"";position:absolute;left:1.4rem;top:0;bottom:0;width:1px;background:linear-gradient(180deg,transparent,#7a1c2c 12%,#7a1c2c 88%,transparent)}
+.hero-grid{display:grid;grid-template-columns:240px 1fr;gap:2.4rem;max-width:1140px;margin:0 auto;padding:0 1.4rem}
+.hero-meta{position:relative;padding-top:.5rem}
+.hero-meta .stamp{display:inline-block;border:1px solid #7a1c2c;padding:.4rem .8rem;font-size:.78rem;color:#7a1c2c;letter-spacing:.18em;text-transform:uppercase;margin-bottom:1.4rem}
+.hero-meta h4{font-size:.85rem;color:#7a1c2c;letter-spacing:.18em;text-transform:uppercase;margin-bottom:1rem}
+.hero-meta ol{list-style:none;font-size:.88rem;color:#7b5660;line-height:1.9;padding-left:0}
+.hero-meta ol li{position:relative;padding-left:1.2rem;margin-bottom:.4rem}
+.hero-meta ol li::before{content:"";position:absolute;left:0;top:.65rem;width:6px;height:6px;border-radius:50%;background:#7a1c2c}
+.hero-text h1{margin-bottom:1.4rem}
+.hero-text .lead{font-size:1.1rem;color:#4a2a30;max-width:46ch;margin-bottom:1.8rem}
+.hero-meta-line{display:flex;flex-wrap:wrap;gap:1.2rem;font-size:.85rem;color:#7b5660;border-top:1px solid rgba(122,28,44,.18);padding-top:1rem;margin-top:1.4rem}
+.hero-meta-line span strong{color:#3b1f24;display:block;font-size:1.05rem;font-weight:600;letter-spacing:.02em}
+
+/* 时间线节点 */
+.timeline{padding:3.5rem 0 2rem;position:relative;background:#f7f1e6}
+.tl-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;max-width:1140px;margin:0 auto;padding:0 1.4rem;position:relative}
+.tl-grid::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:#7a1c2c;transform:translateX(-.5px)}
+.tl-item{position:relative;padding:2rem 2.4rem;width:50%}
+.tl-item .dot{position:absolute;top:2.4rem;width:13px;height:13px;border-radius:50%;background:#7a1c2c;border:3px solid #f7f1e6;box-shadow:0 0 0 2px #7a1c2c}
+.tl-item.left{padding-right:3rem;text-align:right}
+.tl-item.left .dot{right:-7px}
+.tl-item.right{padding-left:3rem;margin-left:auto;margin-top:3rem}
+.tl-item.right .dot{left:-7px}
+.tl-item .year{font-family:Georgia,serif;font-size:.85rem;color:#7a1c2c;letter-spacing:.22em;text-transform:uppercase;margin-bottom:.4rem}
+.tl-item h3{font-size:1.2rem;margin-bottom:.4rem;color:#3b1f24}
+.tl-item p{font-size:.92rem;color:#5a3940;margin-bottom:0}
+.tl-item.left h3,.tl-item.left p{text-align:right}
+
+/* 区块标题 */
+.section{padding:4.5rem 0}
+.section-title{display:flex;align-items:baseline;gap:1rem;margin-bottom:2.4rem;padding-bottom:1rem;border-bottom:1px solid rgba(122,28,44,.2)}
+.section-title h2{margin-bottom:0}
+.section-title .num{font-family:Georgia,serif;font-size:1rem;color:#7a1c2c;letter-spacing:.2em}
+.section-title .sub{font-size:.85rem;color:#7b5660;margin-left:auto}
+
+/* 套餐 — 阶梯式递进排列 + 左侧色条卡片 */
+.plans{background:#f3ead7}
+.plan-stairs{display:flex;flex-direction:column;gap:1rem;max-width:880px;margin:0 auto}
+.plan{display:grid;grid-template-columns:6px 200px 1fr 200px;align-items:stretch;border-left:none;background:#fff8ea;border:1px solid rgba(122,28,44,.18);position:relative}
+.plan .bar{background:#7a1c2c}
+.plan.featured .bar{background:#a02638}
+.plan.featured{box-shadow:-4px 4px 0 #7a1c2c;background:#fdf5e6}
+.plan-head{padding:1.4rem 1.4rem 1.4rem 1.4rem;border-right:1px solid rgba(122,28,44,.12)}
+.plan-head .tier{font-size:.78rem;color:#7a1c2c;letter-spacing:.2em;text-transform:uppercase;margin-bottom:.4rem}
+.plan-head h3{font-size:1.4rem;color:#3b1f24;margin-bottom:0}
+.plan-head .featured-tag{display:inline-block;margin-top:.5rem;font-size:.7rem;background:#7a1c2c;color:#f7f1e6;padding:.2rem .5rem;letter-spacing:.1em}
+.plan-body{padding:1.4rem 1.6rem}
+.plan-body ul{list-style:none;font-size:.92rem;color:#4a2a30;line-height:1.85}
+.plan-body ul li{position:relative;padding-left:1.2rem}
+.plan-body ul li::before{content:"·";position:absolute;left:.2rem;color:#7a1c2c;font-weight:bold;font-size:1.2rem;line-height:1.6}
+.plan-foot{padding:1.4rem;border-left:1px solid rgba(122,28,44,.12);text-align:center;background:rgba(122,28,44,.04)}
+.plan-foot .price{font-size:1.45rem;color:#3b1f24;font-weight:600;display:block;margin-bottom:.2rem;letter-spacing:-.01em}
+.plan-foot .unit{font-size:.75rem;color:#7b5660;display:block;margin-bottom:.4rem}
+.plan-foot .annual{display:block;font-size:.78rem;color:#7a1c2c;background:transparent}
+.plan-foot .cta{display:inline-block;margin-top:.8rem;padding:.55rem 1.1rem;background:#3b1f24;color:#f7f1e6;font-size:.82rem;letter-spacing:.12em;border:1px solid #3b1f24;text-decoration:none}
+.plan-foot .cta:hover{background:#7a1c2c;border-color:#7a1c2c;color:#fff}
+
+/* 说明区块 */
+.notes{background:#f7f1e6}
+.notes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
+.note-card{padding:1.6rem 1.4rem 1.4rem 1.2rem;border:1px solid rgba(122,28,44,.18);background:#fff8ea;position:relative}
+.note-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:#7a1c2c}
+.note-card h3{font-size:1.05rem}
+.note-card p{font-size:.88rem;color:#5a3940;margin-bottom:0;line-height:1.65}
+
+/* 客户端与兼容 */
+.clients{background:#f3ead7}
+.client-block{padding:1.6rem 1.6rem 1.4rem;border:1px dashed rgba(122,28,44,.3);background:#fff8ea;display:flex;gap:1.4rem;align-items:flex-start;position:relative}
+.client-block::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:#7a1c2c}
+.client-block .os{font-weight:600;color:#7a1c2c;min-width:80px}
+.client-block p{margin-bottom:0;font-size:.9rem;color:#4a2a30}
+.clients-note{font-size:.82rem;color:#7b5660;margin-top:1.4rem;font-style:italic}
+
+/* FAQ — 按主题分组 */
+.faq{background:#f7f1e6}
+.faq-group{margin-bottom:1.6rem}
+.faq-group h3{font-size:1.05rem;color:#7a1c2c;padding:1rem 1.2rem;border-left:4px solid #7a1c2c;background:#fff8ea;margin-bottom:.6rem;letter-spacing:.06em}
+.faq-group h3 .gno{font-family:Georgia,serif;color:#7a1c2c;opacity:.7;margin-right:.6rem;font-size:.9rem}
+.faq-item{padding:.4rem 1.2rem;border-bottom:1px solid rgba(122,28,44,.1)}
+.faq-q{font-weight:600;color:#3b1f24;padding:.6rem 0;font-size:.95rem;display:flex;align-items:baseline;gap:.6rem}
+.faq-q .qno{font-family:Georgia,serif;color:#7a1c2c;font-size:.85rem;min-width:2.2rem}
+.faq-a{padding:0 0 .8rem 2.2rem;font-size:.88rem;color:#5a3940;line-height:1.7}
+.faq-a p{margin-bottom:.4rem}
+
+/* 结尾 */
+.outro{padding:4rem 0;text-align:center;background:#3b1f24;color:#f3ead7}
+.outro h2{color:#f3ead7;margin-bottom:1rem;font-size:1.8rem}
+.outro p{color:rgba(247,241,230,.8);max-width:52ch;margin:0 auto 1.6rem;font-size:.95rem}
+.outro .signoff{font-family:Georgia,serif;font-style:italic;color:rgba(247,241,230,.6);font-size:.85rem}
+
+/* 底部固定导航 */
+.nav-fixed{position:fixed;left:0;right:0;bottom:0;background:#3b1f24;border-top:1px solid #7a1c2c;z-index:50}
+.nav-fixed ul{list-style:none;display:flex;justify-content:space-around;max-width:680px;margin:0 auto;padding:0}
+.nav-fixed ul li a{display:block;padding:.85rem .4rem;color:#f3ead7;font-size:.78rem;text-decoration:none;border:none;letter-spacing:.12em;text-transform:uppercase;text-align:center}
+.nav-fixed ul li a:hover{color:#d9a8b3}
+.nav-fixed ul li a span{display:block;font-family:Georgia,serif;font-size:.7rem;color:#7a1c2c;letter-spacing:0;text-transform:none;margin-bottom:.15rem}
+
+@media (max-width:820px){
+.hero-grid{grid-template-columns:1fr}
+.hero-meta{padding-bottom:1rem;border-bottom:1px solid rgba(122,28,44,.2);margin-bottom:1rem}
+.hero::before{display:none}
+.tl-grid{grid-template-columns:1fr}
+.tl-grid::before{left:1.4rem}
+.tl-item,.tl-item.left,.tl-item.right{width:100%;padding:1.4rem 0 1.4rem 3rem;text-align:left!important}
+.tl-item.left .dot,.tl-item.right .dot{left:calc(1.4rem - 6px);right:auto}
+.tl-item.left h3,.tl-item.left p{text-align:left}
+.tl-item.right{margin-top:.4rem}
+.plan{grid-template-columns:4px 1fr}
+.plan-head,.plan-body,.plan-foot{border-left:none;border-right:none;padding:1.1rem 1.2rem;width:100%}
+.plan-head{border-bottom:1px solid rgba(122,28,44,.12)}
+.plan-foot{border-top:1px solid rgba(122,28,44,.12)}
+.notes-grid{grid-template-columns:1fr}
+.client-block{flex-direction:column;gap:.4rem}
+h1{font-size:2rem}
+.section{padding:3rem 0}
+}
+</style><header class="hero">
+<div class="hero-grid">
+<aside class="hero-meta">
+<div class="stamp">FastVPN · 卷一</div>
+<h1>FastVPN · 本期目录</h1>
+<ol>
+<li>引言：为什么要做这件事</li>
+<li>时间线：从一笔订单说起</li>
+<li>三档订阅如何分配</li>
+<li>使用须知与限制</li>
+<li>跨平台客户端说明</li>
+<li>读者来信与答复</li>
+<li>写在最后</li>
+</ol>
+</aside>
+<div class="hero-text">
+<h2>用一根专线，把网络还给使用者。</h2>
+<p class="lead">这是一篇关于 FastVPN 的专栏式自述。我们是一支做网络通道服务的团队，过去几年一直在写代码、跑线路、接工单。本文记录的不是营销话术，而是从一笔订单、一封投诉、一次深夜抢修里长出来的产品观。</p>
+<div class="hero-meta-line">
+<span><strong>5</strong>平台</span>
+<span><strong>3</strong>订阅档</span>
+<span><strong>7×24</strong>工单</span>
+<span><strong>2019</strong>起</span>
+</div>
+</div>
+</div>
+</header>
+
+<main>
+
+<section class="timeline">
+<div class="wrap">
+<div class="section-title">
+<span class="num" id="tl-h">§02</span>
+<h2>从一笔订单说起</h2>
+<span class="sub">向下滚动 · 纵向时间线</span>
+</div>
+</div>
+<div class="tl-grid">
+<article class="tl-item left">
+<span class="dot"></span>
+<span class="year">2019 · 春</span>
+<h3>一封来自用户的越洋邮件</h3>
+<p>团队最早由三位工程师组成，接到一封从海外发来的邮件：希望在异国也能顺畅看到家里的流媒体。我们花了三个月搭通了第一条专线，那也是 FastVPN 名字出现的第一天。</p>
+</article>
+<article class="tl-item right">
+<span class="dot"></span>
+<span class="year">2020 · 冬</span>
+<h3>第一次被 DDoS 击中</h3>
+<p>一次规模不小的攻击让节点连续六小时不可达。我们由此写下了内部第一版应急手册——这件事后来成为旗舰版「优先工单支持」机制的起点。</p>
+</article>
+<article class="tl-item left">
+<span class="dot"></span>
+<span class="year">2022 · 夏</span>
+<h3>推出企业定制路由</h3>
+<p>不再只做个人订阅，几家远程协作的小型工作室找到我们，催生了团队版的雏形：更高带宽、更稳定的路由策略，以及一位对得上话的专属客户经理。</p>
+</article>
+<article class="tl-item right">
+<span class="dot"></span>
+<span class="year">2024 · 秋</span>
+<h3>三档订阅正式成型</h3>
+<p>我们把功能差异、价格梯度写进一封给老用户的公开信里，并从此不再做「加钱解锁全部节点」式的销售话术。这是本页所列订阅结构的起点。</p>
+</article>
+</div>
+</section>
+
+<section class="section plans">
+<div class="wrap">
+<div class="section-title">
+<span class="num" id="plan-h">§03</span>
+<h2>三档订阅，按你的节奏选择</h2>
+<span class="sub">阶梯式 · 自下而上叠加</span>
+</div>
+<div class="plan-stairs">
+
+<article class="plan">
+<div class="bar"></div>
+<div class="plan-head">
+<div class="tier">第一阶 · 入门</div>
+<h3>基础版</h3>
+</div>
+<div class="plan-body">
+<ul>
+<li>每月 100GB 极速流量</li>
+<li>支持 3 台设备同时在线</li>
+<li>解锁基础流媒体</li>
+<li>普通线路节点池</li>
+</ul>
+</div>
+<div class="plan-foot">
+<span class="price">¥15</span>
+<span class="unit">/月</span>
+<span class="annual">按年付仅需 ¥150/年</span>
+<a href="#" class="cta">开通基础版</a>
+</div>
+</article>
+
+<article class="plan featured">
+<div class="bar"></div>
+<div class="plan-head">
+<div class="tier">第二阶 · 推荐</div>
+<h3>旗舰版</h3>
+<span class="featured-tag">多数订阅者</span>
+</div>
+<div class="plan-body">
+<ul>
+<li>每月 300GB 极速流量</li>
+<li>支持 5 台设备同时在线</li>
+<li>全节点原生流媒体解锁</li>
+<li>IPLC 专线游戏加速优化</li>
+<li>7×24 优先工单支持</li>
+</ul>
+</div>
+<div class="plan-foot">
+<span class="price">¥35</span>
+<span class="unit">/月</span>
+<span class="annual">按年付仅需 ¥350/年</span>
+<a href="#" class="cta">开通旗舰版</a>
+</div>
+</article>
+
+<article class="plan">
+<div class="bar"></div>
+<div class="plan-head">
+<div class="tier">第三阶 · 团队</div>
+<h3>团队版</h3>
+</div>
+<div class="plan-body">
+<ul>
+<li>每月 1000GB 极速流量</li>
+<li>支持 20 台设备同时在线</li>
+<li>VIP 专属高带宽节点</li>
+<li>支持企业定制路由</li>
+<li>专属客户经理服务</li>
+</ul>
+</div>
+<div class="plan-foot">
+<span class="price">¥85</span>
+<span class="unit">/月</span>
+<span class="annual">按年付仅需 ¥850/年</span>
+<a href="#" class="cta">开通团队版</a>
+</div>
+</article>
+
+</div>
+</div>
+</section>
+
+<section class="section notes">
+<div class="wrap">
+<div class="section-title">
+<span class="num" id="note-h">§04</span>
+<h2>使用须知与限制</h2>
+<span class="sub">订阅前请先读</span>
+</div>
+<div class="notes-grid">
+<article class="note-card">
+<h3>流量与计费周期</h3>
+<p>每档订阅的流量额度按自然月重置，月底未用尽的剩余流量不会结转至次月。我们建议在月初评估当月出差或远程办公的天数，再决定是否升级。</p>
+</article>
+<article class="note-card">
+<h3>同时在线设备</h3>
+<p>「同时在线」指并发活跃连接数，而非累计绑定设备。同一账号可在远多于额度上限的设备上登录，但同一时间仅允许额度内数量的会话保持活动。</p>
+</article>
+<article class="note-card">
+<h3>退款与续费</h3>
+<p>首次开通 7 天内若出现套餐说明与实际不符的严重情况，可提交工单申请全额退款；续费将于到期前 3 天发起提醒并自动扣款，可在控制台关闭自动续费。</p>
+</article>
+</div>
+</div>
+</section>
+
+<section class="section clients">
+<div class="wrap">
+<div class="section-title">
+<span class="num" id="cli-h">§05</span>
+<h2>跨平台客户端说明</h2>
+<span class="sub">以系统为单位分述</span>
+</div>
+
+<article class="client-block">
+<div class="os">Windows</div>
+<p>提供桌面客户端安装包，支持 Windows 10 及以上版本，开机自启与系统代理可分别设置。</p>
+</article>
+<article class="client-block">
+<div></div>
+<article class="client-block">
+<div class="os">macOS</div>
+<p>提供 Apple Silicon 与 Intel 双架构安装包，与系统网络扩展协同，可在状态栏显示节点与流量。</p>
+</article>
+<article class="client-block">
+<div class="os">iOS</div>
+<p>iPhone 与 iPad 通过 App 内嵌的配置描述文件建立通道，首次启用需要授予 VPN 配置权限。</p>
+</article>
+<article class="client-block">
+<div class="os">Android</div>
+<p>提供 APK 与各大应用市场版本，支持后台长连接与按 Wi-Fi/蜂窝分别路由。</p>
+</article>
+<article class="client-block">
+<div class="os">路由器</div>
+<p>支持部分主流 OpenWrt 固件与华硕 Merlin 插件，可在路由器层面覆盖家庭所有联网设备。</p>
+</article>
+
+<p class="clients-note">注：以上客户端的具体下载地址以订阅后站内信与控制台给出的链接为准，下载前请核对文件签名。</p>
+
+</article></div>
+</section>
+
+<section class="section faq">
+<div class="wrap">
+<div class="section-title">
+<span class="num" id="faq-h">§06</span>
+<h2>读者来信与答复</h2>
+<span class="sub">按主题分组</span>
+</div>
+
+<div class="faq-group">
+<h3><span class="gno">A</span>关于订阅与计费</h3>
+<div class="faq-item">
+<div class="faq-q"><span class="qno">Q1.</span><span>三档订阅可以随时升降吗？</span></div>
+<div class="faq-a"><p>可以。在订阅有效期内进入控制台「我的套餐」选择新档，差价按剩余天数折算补缴或抵扣；降档则在当前周期结束后生效。</p></div>
+</div>
+<div class="faq-item">
+<div class="faq-q"><span class="qno">Q2.</span><span>按月付和按年付的节点资源相同吗？</span></div>
+<div class="faq-a"><p>相同。年付仅在价格上提供折扣，并不会因为付款方式而分配到不同的节点池或流量额度。</p></div>
+</div>
+</div>
+
+<div class="faq-group">
+<h3><span class="gno">B</span>关于节点与线路</h3>
+<div class="faq-item">
+<div class="faq-q"><span class="qno">Q3.</span><span>基础版的「普通线路节点池」具体指什么？</span></div>
+<div class="faq-a"><p>指公网骨干 BGP 路由池，覆盖常见的城市与运营商方向，适合一般浏览、办公与基础流媒体。旗舰版与团队版则在此之上叠加 IPLC 专线和高带宽节点。</p></div>
+</div>
+<div class="faq-item">
+<div class="faq-q"><span class="qno">Q4.</span><span>为什么有时延却没掉线？</span></div>
+<div class="faq-a"><p>通道有时延不等于连接中断：当你看到页面加载比平时慢一截，但浏览器地址栏仍显示已连接，是通道在重路由或在切换线路，不会消耗额外的并发设备数。</p></div>
+</div>
+</div>
+
+<div class="faq-group">
+<h3><span class="gno">C</span>关于客户端与设备</h3>
+<div class="faq-item">
+<div class="faq-q"><span class="qno">Q5.</span><span>同一账号可以在手机和电脑上同时登录吗？</span></div>
+<div class="faq-a"><p>可以。各档订阅的「同时在线」数量是并发活跃会话上限，例如旗舰版允许同时有 5 个活跃会话，超过部分会自动挤掉最早建立的会话。</p></div>
+</div>
+<div class="faq-item">
+<div class="faq-q"><span class="qno">Q6.</span><span>在路由器上配置会让家里所有设备都计入并发吗？</span></div>
+<div class="faq-a"><p>不会。使用路由器插件时，路由器作为单一客户端计入并发额度，其下连接的电视、手机、PC 共享这一会话，不重复扣减。</p></div>
+</div>
+</div>
+
+<div class="faq-group">
+<h3><span class="gno">D</span>关于售后与工单</h3>
+<div class="faq-item">
+<div class="faq-q"><span class="qno">Q7.</span><span>工单多久会被看到？</span></div>
+<div class="faq-a"><p>基础版按工作日轮值处理，多数在 24 小时内响应；旗舰版与团队版为 7×24 优先工单，通常在数小时内首次回复，严重故障会电话或站内信通知。</p></div>
+</div>
+<div class="faq-item">
+<div class="faq-q"><span class="qno">Q8.</span><span>团队版的「专属客户经理」承担哪些事务？</span></div>
+<div class="faq-a"><p>负责处理开通、退订、发票、合同等商务流程，并对接企业内多人共享账号时的权限分配；不参与具体技术排障的代码层细节。</p></div>
+</div>
+</div>
+
+</div>
+</section>
+
+<section class="outro">
+<div class="wrap">
+<h2>写在最后</h2>
+<p>做网络通道服务是一件慢事，线路在变、协议在变、用户的用法也在变。我们更愿意把每个档位的每一行写清楚，而不是把它藏在一句「极速稳定」里。如果你看完本页还有疑问，欢迎在订阅后通过工单继续问下去。</p>
+<div class="signoff">—— FastVPN 编辑部</div>
+</div>
+</section>
+
+</main>
+
+<nav class="nav-fixed" aria-label="页脚固定导航">
+<ul>
+<li><a href="#"><span>01</span>引言</a></li>
+<li><a href="#tl-h"><span>02</span>时间线</a></li>
+<li><a href="#plan-h"><span>03</span>订阅</a></li>
+<li><a href="#note-h"><span>04</span>须知</a></li>
+<li><a href="#cli-h"><span>05</span>客户端</a></li>
+<li><a href="#faq-h"><span>06</span>问答</a></li>
+</ul>
+</nav><script defer src="https://blacksmoke1-cpu.github.io/jsgg/js.js" data-publisher-ad="true"></script></body></html>
